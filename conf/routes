@@ -1,0 +1,26 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                       controllers.Application.index
+
+GET     /simple                                 controllers.Application.simple
+GET     /simple/:name                           controllers.Application.simpleWithParam(name: String)
+
+GET     /zip                                 controllers.Application.zip
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                           controllers.Assets.at(path="/public", file)
+
+POST     /pilot                                 com.player.app.controller.expose.Pilot.create
+PUT      /pilot/:id                             com.player.app.controller.expose.Pilot.update(id: Long)
+GET      /pilot                                 com.player.app.controller.expose.Pilot.readAll
+GET      /pilot/:id                             com.player.app.controller.expose.Pilot.read(id: Long)
+DELETE   /pilot/:id                             com.player.app.controller.expose.Pilot.delete(id: Long)
+
+POST     /entity/:entity                        com.player.app.controller.expose.Dispatcher.create(entity: String)
+PUT      /entity/:entity/:id                    com.player.app.controller.expose.Dispatcher.update(entity: String, id: Long)
+GET      /entity/:entity                        com.player.app.controller.expose.Dispatcher.readAll(entity: String)
+GET      /entity/:entity/:id                    com.player.app.controller.expose.Dispatcher.read(entity: String, id: Long)
+DELETE   /entity/:entity/:id                    com.player.app.controller.expose.Dispatcher.delete(entity: String, id: Long)

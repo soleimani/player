@@ -1,0 +1,3 @@
+curl -v -X POST -H "Content-Type: application/json" -d '{"name":"Ali"}' http://localhost:9000/pilot
+curl -v -X GET http://localhost:9000/pilot/3
+curl -v -X DELETE http://localhost:9000/pilot/3

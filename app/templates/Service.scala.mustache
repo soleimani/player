@@ -1,0 +1,47 @@
+import anorm.{ Pk, SqlRow, Id }
+import com.player.app.model.Model
+
+case class {{modelName}} ( var id: Pk[ Long ], var name: String ) extends Model
+
+trait {{modelName}}RepositoryComponent extends com.player.app.repository.GenericComponent[ {{modelName}} ] {
+
+  object {{modelName}}Repository extends GenericRepository {
+    val createScript = "CREATE TABLE {{tableName}} (id int(11) NOT NULL AUTO_INCREMENT,name varchar(20) DEFAULT NULL,PRIMARY KEY (id))"
+    val dropScript = "drop table if exists {{tableName}}"
+    val insertScript = "insert into {{tableName}}(name) values ({name})"
+    val selectScript = "select * from {{tableName}} where id = {id}"
+    val selectAllScript = "select * from {{tableName}}"
+    val updateScript = "update {{tableName}} set name = {name} where id = {id}"
+    val deleteScript = "delete from {{tableName}} where id = {id}"
+    val deleteAllScript = "delete from {{tableName}}"
+
+    override def getInsertParam( model: {{modelName}} ) = Array( 'name -> model.name )
+    override def getUpdateParameter( model: {{modelName}} ) = Array( 'id -> model.id, 'name -> model.name )
+
+    override def rowMapper: SqlRow ⇒ {{modelName}} = { row: SqlRow ⇒
+      new {{modelName}}( Id( row[ Long ]( "id" ) ), row[ String ]( "name" ) )
+    }
+    
+    override def serialize( model: {{modelName}} ): Map[ String, Any ] = {
+      Map("id" -> model.id.get, "name" -> model.name)
+    }
+    
+    override def deserialize( value: Map[ String, Any ] ): {{modelName}}  =
+      new {{modelName}}( Id( value.getOrElse( "id", 0L ).asInstanceOf[Long] ),
+          value.getOrElse( "name", "" ).asInstanceOf[String] )    
+  }
+}
+
+trait {{modelName}}ServiceComponent extends {{genericPackageName}}[ {{modelName}} ] {
+  this: com.player.app.repository.api.Component[ {{modelName}} ] ⇒
+  object {{modelName}}Service extends GenericService
+}
+
+
+object Service extends {{modelName}}ServiceComponent with {{modelName}}RepositoryComponent {
+  def repository = {{modelName}}Repository
+  def service = {{modelName}}Service
+  
+}
+
+Service

@@ -1,0 +1,21 @@
+{
+  "name" : "Pilot",
+  "description" : "Example JSON Schema",
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "title": "Name",
+      "type" : "String",
+      "length" : 20,
+      "pattern" : "[A-Z]"
+    },
+    "age" : {
+      "title" : "Age",
+      "type" : "Integer"
+    },
+    "date" : {
+      "title" : "Date",
+      "type" : "Date"
+    }
+  }
+}
